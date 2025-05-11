@@ -8,6 +8,7 @@ This project is a C-based tool that parses a structured JSON file and generates 
 - Automatically detects tables (arrays of objects) and generates a CSV file for each.
 - Handles scalar fields (strings, numbers, booleans) as CSV columns.
 - Outputs CSV files to an `output/` directory.
+- `expected_outputs` is the directory that contains results for the data files to be tested
 
 ## Prerequisites
 - GCC (tested with gcc (Debian 14.2.0-19) 14.2.0)
@@ -26,10 +27,10 @@ This project is a C-based tool that parses a structured JSON file and generates 
    ```
 
 ## Usage
-1. Place your input JSON file in the project directory (e.g., `input.json`).
+1. Place your input JSON file in the project directory (e.g., `input.json`, `data1.json` etc.). (All 5 test files are already present in the project directory, all you need to do is change the filename below to test it.)
 2. Run the parser:
    ```sh
-   ./csv_parser input.json
+   ./csv_parser data1.json
    ```
 3. The generated CSV files will be found in the `output/` directory.
 
@@ -94,7 +95,7 @@ id,userId,productId,quantity,orderDate,status
 
 ## Notes
 - The tool currently expects the input JSON to have top-level arrays of objects for each table.
-- The `output/root.csv` file is generated for the root object and can usually be ignored.
+- The `output/root.csv` file is generated for the root object and can usually be ignored if there is no object name for a single table json file.
 - Only scalar fields (string, number, boolean) are included as CSV columns; nested objects/arrays are not flattened.
 - For large or deeply nested JSON, further enhancements may be needed.
 
