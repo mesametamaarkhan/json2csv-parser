@@ -295,35 +295,22 @@ KeySet* collect_key_sets(Node* node, KeySet* key_sets, const char* name_hint) {
     if (!node) return key_sets;
     
     if (node->type == NODE_OBJECT) {
-        /* Check if this object structure is already known */
-        KeySet* existing = find_key_set(key_sets, node);
-        if (!existing) {
-            /* New structure, add to list */
-            KeySet* new_set = create_key_set(node, name_hint);
-            new_set->next = key_sets;
-            key_sets = new_set;
-        }
-        
-        /* Recursively process all child objects and arrays */
+        /* Process each field in the object */
         for (int i = 0; i < node->data.object.pair_count; i++) {
             Pair* pair = node->data.object.pairs[i];
             Node* value = pair->value;
             
-            if (value->type == NODE_OBJECT) {
-                key_sets = collect_key_sets(value, key_sets, pair->key);
-            } else if (value->type == NODE_ARRAY && value->data.array.element_count > 0) {
-                /* Process arrays: check first element for object type */
+            /* If the value is an array of objects, process it as a table */
+            if (value->type == NODE_ARRAY && value->data.array.element_count > 0) {
                 Node* first = value->data.array.elements[0];
                 if (first->type == NODE_OBJECT) {
+                    /* Use the field name as the table name */
                     key_sets = collect_key_sets(first, key_sets, pair->key);
                 }
-                
-                /* Process all array elements for consistency */
-                for (int j = 0; j < value->data.array.element_count; j++) {
-                    if (value->data.array.elements[j]->type == NODE_OBJECT) {
-                        key_sets = collect_key_sets(value->data.array.elements[j], key_sets, pair->key);
-                    }
-                }
+            }
+            /* If the value is an object, process it recursively */
+            else if (value->type == NODE_OBJECT) {
+                key_sets = collect_key_sets(value, key_sets, pair->key);
             }
         }
     }
@@ -356,45 +343,38 @@ Table* create_table_from_key_set(KeySet* key_set) {
 
 /* Analyze AST and generate schema */
 Schema* analyze_ast(Node* root) {
+    if (!root) return NULL;
+    
     Schema* schema = malloc(sizeof(Schema));
+    if (!schema) return NULL;
+    
     schema->tables = NULL;
     schema->table_count = 0;
     
-    /* First pass: collect all key sets */
-    KeySet* key_sets = NULL;
-    
-    /* Handle root level array of objects */
-    if (root->type == NODE_ARRAY && root->data.array.element_count > 0) {
-        for (int i = 0; i < root->data.array.element_count; i++) {
-            Node* element = root->data.array.elements[i];
-            if (element->type == NODE_OBJECT) {
-                key_sets = collect_key_sets(element, key_sets, "root");
+    /* Process root object */
+    if (root->type == NODE_OBJECT) {
+        for (int i = 0; i < root->data.object.pair_count; i++) {
+            Pair* pair = root->data.object.pairs[i];
+            Node* value = pair->value;
+            if (value->type == NODE_ARRAY && value->data.array.element_count > 0) {
+                Node* first = value->data.array.elements[0];
+                if (first->type == NODE_OBJECT) {
+                    Table* table = malloc(sizeof(Table));
+                    if (!table) continue;
+                    table->name = strdup(pair->key);
+                    table->next = schema->tables;
+                    schema->tables = table;
+                    schema->table_count++;
+                    table->column_count = first->data.object.pair_count;
+                    table->columns = malloc(sizeof(char*) * table->column_count);
+                    for (int j = 0; j < first->data.object.pair_count; j++) {
+                        Pair* field = first->data.object.pairs[j];
+                        table->columns[j] = strdup(field->key);
+                    }
+                }
             }
         }
-    } else {
-        key_sets = collect_key_sets(root, key_sets, "root");
     }
-    
-    /* Second pass: create tables from key sets */
-    KeySet* current = key_sets;
-    while (current) {
-        Table* table = create_table_from_key_set(current);
-        
-        /* Add table to schema */
-        table->next = schema->tables;
-        schema->tables = table;
-        schema->table_count++;
-        
-        current = current->next;
-    }
-    
-    /* Clean up key sets */
-    while (key_sets) {
-        KeySet* next = key_sets->next;
-        free_key_set(key_sets);
-        key_sets = next;
-    }
-    
     return schema;
 }
 

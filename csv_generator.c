@@ -173,15 +173,13 @@ static Pair* find_pair_by_key(Node* obj_node, const char* key) {
 /* Process an object and write it to CSV */
 static void process_object(Node* obj_node, Table* table, FILE* file, int id, Schema* schema, CSVContext* context);
 
-/* Process array nodes, find all objects and process them */
+/* Process an array of objects and write them to CSV */
 static void process_array(Node* array_node, Table* table, FILE* file, Schema* schema, CSVContext* context) {
     if (array_node->type != NODE_ARRAY) return;
     
     for (int i = 0; i < array_node->data.array.element_count; i++) {
         Node* element = array_node->data.array.elements[i];
-        
         if (element->type == NODE_OBJECT) {
-            /* Process object within array with a new ID */
             process_object(element, table, file, context->next_id++, schema, context);
         }
     }
@@ -240,38 +238,43 @@ static void process_object(Node* obj_node, Table* table, FILE* file, int id, Sch
 void generate_csv(Node* root, Schema* schema, CSVContext* context) {
     if (!root || !schema || !context) return;
     
-    /* Process each table in schema */
-    Table* current_table = schema->tables;
-    while (current_table) {
-        /* Create CSV file for this table */
-        char filepath[512];
-        snprintf(filepath, sizeof(filepath), "%s/%s.csv", context->output_dir, current_table->name);
-        
-        FILE* file = fopen(filepath, "w");
-        if (!file) {
-            fprintf(stderr, "Failed to create file %s\n", filepath);
-            current_table = current_table->next;
-            continue;
-        }
-        
-        /* Write header row */
-        write_csv_header(file, current_table);
-        
-        /* Process root node if it's an object */
-        if (root->type == NODE_OBJECT) {
-            process_object(root, current_table, file, context->next_id++, schema, context);
-        }
-        /* Process root node if it's an array of objects */
-        else if (root->type == NODE_ARRAY) {
-            for (int i = 0; i < root->data.array.element_count; i++) {
-                Node* element = root->data.array.elements[i];
-                if (element->type == NODE_OBJECT) {
-                    process_object(element, current_table, file, context->next_id++, schema, context);
+    /* Process each field in the root object */
+    if (root->type == NODE_OBJECT) {
+        for (int i = 0; i < root->data.object.pair_count; i++) {
+            Pair* pair = root->data.object.pairs[i];
+            Node* value = pair->value;
+            
+            /* If the value is an array of objects, process it as a table */
+            if (value->type == NODE_ARRAY && value->data.array.element_count > 0) {
+                Node* first = value->data.array.elements[0];
+                if (first->type == NODE_OBJECT) {
+                    /* Find matching table */
+                    Table* table = schema->tables;
+                    while (table) {
+                        if (strcmp(table->name, pair->key) == 0) {
+                            /* Create CSV file for this table */
+                            char filepath[512];
+                            snprintf(filepath, sizeof(filepath), "%s/%s.csv", context->output_dir, table->name);
+                            
+                            FILE* file = fopen(filepath, "w");
+                            if (!file) {
+                                fprintf(stderr, "Failed to create file %s\n", filepath);
+                                break;
+                            }
+                            
+                            /* Write header */
+                            write_csv_header(file, table);
+                            
+                            /* Process array */
+                            process_array(value, table, file, schema, context);
+                            
+                            fclose(file);
+                            break;
+                        }
+                        table = table->next;
+                    }
                 }
             }
         }
-        
-        fclose(file);
-        current_table = current_table->next;
     }
 }
