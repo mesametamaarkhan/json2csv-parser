@@ -356,6 +356,8 @@ Schema* analyze_ast(Node* root) {
         for (int i = 0; i < root->data.object.pair_count; i++) {
             Pair* pair = root->data.object.pairs[i];
             Node* value = pair->value;
+            
+            /* If the value is an array of objects, process it as a table */
             if (value->type == NODE_ARRAY && value->data.array.element_count > 0) {
                 Node* first = value->data.array.elements[0];
                 if (first->type == NODE_OBJECT) {
@@ -371,6 +373,21 @@ Schema* analyze_ast(Node* root) {
                         Pair* field = first->data.object.pairs[j];
                         table->columns[j] = strdup(field->key);
                     }
+                }
+            }
+            /* If the value is an object, process it as a separate table */
+            else if (value->type == NODE_OBJECT) {
+                Table* table = malloc(sizeof(Table));
+                if (!table) continue;
+                table->name = strdup(pair->key);
+                table->next = schema->tables;
+                schema->tables = table;
+                schema->table_count++;
+                table->column_count = value->data.object.pair_count;
+                table->columns = malloc(sizeof(char*) * table->column_count);
+                for (int j = 0; j < value->data.object.pair_count; j++) {
+                    Pair* field = value->data.object.pairs[j];
+                    table->columns[j] = strdup(field->key);
                 }
             }
         }

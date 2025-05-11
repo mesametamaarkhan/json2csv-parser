@@ -39,6 +39,27 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    // --- Begin: Support single object root by wrapping in 'users' array ---
+    if (root && root->type == NODE_OBJECT) {
+        int is_collection_root = 0;
+        for (int i = 0; i < root->data.object.pair_count; i++) {
+            Node* val = root->data.object.pairs[i]->value;
+            if (val->type == NODE_ARRAY) {
+                is_collection_root = 1;
+                break;
+            }
+        }
+        if (!is_collection_root) {
+            Node* arr = create_array_node(NULL, 0);
+            add_element_to_array(arr, root);
+            Pair* p = create_pair_node(strdup("users"), arr);
+            Node* new_root = create_object_node(NULL, 0);
+            add_pair_to_object(new_root, p);
+            root = new_root;
+        }
+    }
+    // --- End: Support single object root by wrapping in 'users' array ---
+
     printf("JSON parsed successfully. Analyzing AST...\n");
 
     /* Analyze AST to generate schema */
