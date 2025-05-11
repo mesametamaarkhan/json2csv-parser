@@ -1,0 +1,87 @@
+{
+    "users": [
+      {
+        "id": 1,
+        "name": "Alice Johnson",
+        "email": "alice.j@example.com",
+        "age": 29,
+        "isActive": true,
+        "country": "USA"
+      },
+      {
+        "id": 2,
+        "name": "Bob Smith",
+        "email": "bob.smith@sample.org",
+        "age": 34,
+        "isActive": false,
+        "country": "UK"
+      }
+    ],
+    "posts": [
+      {
+        "id": 101,
+        "userId": 1,
+        "title": "Exploring the Mountains",
+        "content": "Had an amazing hike in the Rockies!",
+        "createdAt": "2024-11-01T10:00:00Z"
+      },
+      {
+        "id": 102,
+        "userId": 2,
+        "title": "City Food Tour",
+        "content": "Discovered some incredible eats downtown.",
+        "createdAt": "2024-12-05T14:30:00Z"
+      }
+    ],
+    "comments": [
+      {
+        "id": 201,
+        "postId": 101,
+        "userId": 2,
+        "comment": "Looks like a great trip!",
+        "createdAt": "2024-11-02T08:15:00Z"
+      },
+      {
+        "id": 202,
+        "postId": 102,
+        "userId": 1,
+        "comment": "I need to check out those places!",
+        "createdAt": "2024-12-06T09:00:00Z"
+      }
+    ],
+    "products": [
+      {
+        "id": 301,
+        "name": "Wireless Headphones",
+        "price": 89.99,
+        "stock": 120,
+        "category": "Electronics"
+      },
+      {
+        "id": 302,
+        "name": "Yoga Mat",
+        "price": 25.50,
+        "stock": 200,
+        "category": "Fitness"
+      }
+    ],
+    "orders": [
+      {
+        "id": 401,
+        "userId": 1,
+        "productId": 301,
+        "quantity": 1,
+        "orderDate": "2025-01-10T12:00:00Z",
+        "status": "shipped"
+      },
+      {
+        "id": 402,
+        "userId": 2,
+        "productId": 302,
+        "quantity": 2,
+        "orderDate": "2025-02-20T15:45:00Z",
+        "status": "processing"
+      }
+    ]
+  }
+  
