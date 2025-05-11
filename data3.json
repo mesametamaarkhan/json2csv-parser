@@ -1,0 +1,86 @@
+{
+    "users": [
+      {
+        "id": 7,
+        "name": "Grace Kim",
+        "email": "grace.k@example.com",
+        "age": 33,
+        "isActive": true,
+        "country": "South Korea"
+      },
+      {
+        "id": 8,
+        "name": "Henry Clark",
+        "email": "henry.c@sample.org",
+        "age": 29,
+        "isActive": true,
+        "country": "Italy"
+      }
+    ],
+    "posts": [
+      {
+        "id": 107,
+        "userId": 7,
+        "title": "River Rafting",
+        "content": "Thrilling rafting experience on the river!",
+        "createdAt": "2025-06-10T10:30:00Z"
+      },
+      {
+        "id": 108,
+        "userId": 8,
+        "title": "Historical Tour",
+        "content": "Visited some ancient ruins today.",
+        "createdAt": "2025-06-20T14:00:00Z"
+      }
+    ],
+    "comments": [
+      {
+        "id": 207,
+        "postId": 107,
+        "userId": 8,
+        "comment": "That looks exciting!",
+        "createdAt": "2025-06-11T08:45:00Z"
+      },
+      {
+        "id": 208,
+        "postId": 108,
+        "userId": 7,
+        "comment": "So much history!",
+        "createdAt": "2025-06-21T15:15:00Z"
+      }
+    ],
+    "products": [
+      {
+        "id": 307,
+        "name": "Laptop Stand",
+        "price": 35.00,
+        "stock": 90,
+        "category": "Office"
+      },
+      {
+        "id": 308,
+        "name": "Camping Tent",
+        "price": 99.99,
+        "stock": 60,
+        "category": "Outdoor"
+      }
+    ],
+    "orders": [
+      {
+        "id": 407,
+        "userId": 7,
+        "productId": 307,
+        "quantity": 1,
+        "orderDate": "2025-06-15T12:00:00Z",
+        "status": "delivered"
+      },
+      {
+        "id": 408,
+        "userId": 8,
+        "productId": 308,
+        "quantity": 1,
+        "orderDate": "2025-06-25T17:00:00Z",
+        "status": "pending"
+      }
+    ]
+  }

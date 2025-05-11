@@ -1,0 +1,86 @@
+{
+    "users": [
+      {
+        "id": 9,
+        "name": "Ivy Patel",
+        "email": "ivy.p@example.com",
+        "age": 26,
+        "isActive": false,
+        "country": "India"
+      },
+      {
+        "id": 10,
+        "name": "Jack Moore",
+        "email": "jack.m@sample.org",
+        "age": 40,
+        "isActive": true,
+        "country": "Spain"
+      }
+    ],
+    "posts": [
+      {
+        "id": 109,
+        "userId": 9,
+        "title": "Desert Safari",
+        "content": "Rode camels in the desert today!",
+        "createdAt": "2025-07-01T08:00:00Z"
+      },
+      {
+        "id": 110,
+        "userId": 10,
+        "title": "Wine Tasting",
+        "content": "Tried some excellent local wines.",
+        "createdAt": "2025-07-15T16:00:00Z"
+      }
+    ],
+    "comments": [
+      {
+        "id": 209,
+        "postId": 109,
+        "userId": 10,
+        "comment": "What an adventure!",
+        "createdAt": "2025-07-02T09:10:00Z"
+      },
+      {
+        "id": 210,
+        "postId": 110,
+        "userId": 9,
+        "comment": "Great recommendations!",
+        "createdAt": "2025-07-16T17:30:00Z"
+      }
+    ],
+    "products": [
+      {
+        "id": 309,
+        "name": "Coffee Maker",
+        "price": 59.99,
+        "stock": 110,
+        "category": "Kitchen"
+      },
+      {
+        "id": 310,
+        "name": "Sunglasses",
+        "price": 29.95,
+        "stock": 250,
+        "category": "Accessories"
+      }
+    ],
+    "orders": [
+      {
+        "id": 409,
+        "userId": 9,
+        "productId": 309,
+        "quantity": 1,
+        "orderDate": "2025-07-05T11:00:00Z",
+        "status": "shipped"
+      },
+      {
+        "id": 410,
+        "userId": 10,
+        "productId": 310,
+        "quantity": 3,
+        "orderDate": "2025-07-20T18:00:00Z",
+        "status": "processing"
+      }
+    ]
+  }

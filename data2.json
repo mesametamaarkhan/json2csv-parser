@@ -1,0 +1,86 @@
+{
+    "users": [
+      {
+        "id": 5,
+        "name": "Eve Wilson",
+        "email": "eve.w@example.com",
+        "age": 25,
+        "isActive": true,
+        "country": "Germany"
+      },
+      {
+        "id": 6,
+        "name": "Frank Davis",
+        "email": "frank.d@sample.org",
+        "age": 38,
+        "isActive": false,
+        "country": "France"
+      }
+    ],
+    "posts": [
+      {
+        "id": 105,
+        "userId": 5,
+        "title": "Forest Exploration",
+        "content": "Hiked through a dense forest today!",
+        "createdAt": "2025-05-01T09:00:00Z"
+      },
+      {
+        "id": 106,
+        "userId": 6,
+        "title": "Art Gallery Visit",
+        "content": "Enjoyed a wonderful art exhibition.",
+        "createdAt": "2025-05-15T11:45:00Z"
+      }
+    ],
+    "comments": [
+      {
+        "id": 205,
+        "postId": 105,
+        "userId": 6,
+        "comment": "Sounds peaceful!",
+        "createdAt": "2025-05-02T07:30:00Z"
+      },
+      {
+        "id": 206,
+        "postId": 106,
+        "userId": 5,
+        "comment": "Amazing artwork!",
+        "createdAt": "2025-05-16T12:00:00Z"
+      }
+    ],
+    "products": [
+      {
+        "id": 305,
+        "name": "Bluetooth Speaker",
+        "price": 45.99,
+        "stock": 300,
+        "category": "Audio"
+      },
+      {
+        "id": 306,
+        "name": "Backpack",
+        "price": 39.95,
+        "stock": 175,
+        "category": "Travel"
+      }
+    ],
+    "orders": [
+      {
+        "id": 405,
+        "userId": 5,
+        "productId": 305,
+        "quantity": 2,
+        "orderDate": "2025-05-05T13:00:00Z",
+        "status": "shipped"
+      },
+      {
+        "id": 406,
+        "userId": 6,
+        "productId": 306,
+        "quantity": 1,
+        "orderDate": "2025-05-20T15:30:00Z",
+        "status": "processing"
+      }
+    ]
+  }

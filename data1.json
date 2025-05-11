@@ -1,0 +1,86 @@
+{
+    "users": [
+      {
+        "id": 3,
+        "name": "Charlie Brown",
+        "email": "charlie.b@example.com",
+        "age": 27,
+        "isActive": true,
+        "country": "Canada"
+      },
+      {
+        "id": 4,
+        "name": "Dana Lee",
+        "email": "dana.lee@sample.org",
+        "age": 31,
+        "isActive": false,
+        "country": "Australia"
+      }
+    ],
+    "posts": [
+      {
+        "id": 103,
+        "userId": 3,
+        "title": "Beach Day Adventure",
+        "content": "Spent a relaxing day by the ocean!",
+        "createdAt": "2025-03-15T11:00:00Z"
+      },
+      {
+        "id": 104,
+        "userId": 4,
+        "title": "Urban Photography",
+        "content": "Captured some stunning cityscapes.",
+        "createdAt": "2025-04-10T13:30:00Z"
+      }
+    ],
+    "comments": [
+      {
+        "id": 203,
+        "postId": 103,
+        "userId": 4,
+        "comment": "Beautiful shots!",
+        "createdAt": "2025-03-16T09:20:00Z"
+      },
+      {
+        "id": 204,
+        "postId": 104,
+        "userId": 3,
+        "comment": "Love the urban vibe!",
+        "createdAt": "2025-04-11T10:10:00Z"
+      }
+    ],
+    "products": [
+      {
+        "id": 303,
+        "name": "Smart Watch",
+        "price": 129.99,
+        "stock": 85,
+        "category": "Wearables"
+      },
+      {
+        "id": 304,
+        "name": "Running Shoes",
+        "price": 65.00,
+        "stock": 150,
+        "category": "Footwear"
+      }
+    ],
+    "orders": [
+      {
+        "id": 403,
+        "userId": 3,
+        "productId": 303,
+        "quantity": 1,
+        "orderDate": "2025-03-20T14:00:00Z",
+        "status": "delivered"
+      },
+      {
+        "id": 404,
+        "userId": 4,
+        "productId": 304,
+        "quantity": 2,
+        "orderDate": "2025-04-25T16:00:00Z",
+        "status": "pending"
+      }
+    ]
+  }
